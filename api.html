@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <!-- Bootstrap CSS -->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+
+        <title>Diary App API Documentation</title>
+    </head>
+    <body>
+
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container-fluid">
+              <a class="navbar-brand" href="#">Dev</a>
+              <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="api.html">Home</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href="https://github.com/rokaenfet22/PB-webdev-assignment">GitHub</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </nav>
+
+        <div class="px-5 container">
+            <form class="container row mt-5" style="">
+                <fieldset>
+                    <legend class="lead">About</legend>
+                    <p>
+                        This is the API documentation of my single-page web application made for Programming Black Assignemtn-1. There
+                        will be detailed explanation on purpose, exception handling, the request it takes, it's exact response, on every
+                        method used in the application's server.
+                    </p>
+                </fieldset>
+            </form>
+            <hr>
+            <!--app.get("/content")-->
+            <form class="container row mt-5" style="">
+                <fieldset>
+                    <legend class="lead">GET("/content"...</legend>
+                    <h5>Purpose</h5>
+                    <p>Responsibly for loading in entities stored in JSON file upon every "load" action on the page.</p>
+                    <h5>Exception Handling</h5>
+                    <p>Handles no exception as all non-valid entity types are filtered out upon uploading them through the web application</p>
+                    <h5>Accepting Request And Its Origin</h5>
+                    <p>Upon recieving a fetch request from client, the method will read content of both JSON files, respectively containing Card entity's data and Comment entity's data, through nodejs's module fs. To maintain the order of each JSON object in each entities, JSON objects of different entities are separated into different arrays, and read from sequentially (Async). This is as data in different entities is related by index upon converting JSON object to a list.</p>
+                    <h5>Response Upon Valid Request</h5>
+                    <p>The response is an array consisting of js object version of each entitie's JSON object.</p>
+                </fieldset>
+            </form>
+            <hr>
+            <!--app.post("/new")-->
+            <form class="container row mt-5" style="">
+                <fieldset>
+                    <legend class="lead">POST("/new"...</legend>
+                    <h5>Purpose</h5>
+                    <p>Responsible for validating and uploading specific user inputs as a new Day Card entity</p>
+                    <h5>Exception Handling</h5>
+                    <p>Responds with a 400 HTTP status, and an explanatory message upon recieving invalid inputs. These includes both title and content value left empty, or the request body being incorrectly sent</p>
+                    <h5>Accepting Request And Its Origin</h5>
+                    <p>POST request send, with JSON encoded body (using body-parser module). The request is sent upon form submittion of upload. Attached to it is a JSON object containing the 3 relevant form fields which is to be reflected upon addition of Card entity.</p>
+                    <h5>Response Upon Valid Request</h5>
+                    <p>Decodes recieved JSON object body into the 3 relevant data. Utilizing fs, updates cards.json with newly invoked Card entity, as well as add an additional empty objet to comment.json, to maintain index relation between the two json files.</p>
+                </fieldset>
+            </form>
+            <hr>
+            <!--app.post("/preview")-->
+            <form class="container row mt-5" style="">
+                <fieldset>
+                    <legend class="lead">POST("/preview"...</legend>
+                    <h5>Purpose</h5>
+                    <p>Updates preview Card section with current data in upload form element, to show user the expected Card entity if user were to submit.</p>
+                    <h5>Exception Handling</h5>
+                    <p>None</p>
+                    <h5>Accepting Request And Its Origin</h5>
+                    <p>Recieves form data upon the validaton checkbox is checked off. Accepts a JSON object containing the 3 relevant parameters from upload form element.</p>
+                    <h5>Response Upon Valid Request</h5>
+                    <p>creates an array containing the 3 relevant parameters in order of "title","content","date", where date is altered to present day in YYYY-MM-DD format if not given one. The response is such an array, but placed inside another.</p>
+                </fieldset>
+            </form>
+            <hr>
+            <!--app.post("/commented")-->
+            <form class="container row mt-5" style="">
+                <fieldset>
+                    <legend class="lead">POST("/commented"...</legend>
+                    <h5>Purpose</h5>
+                    Activates pon clicking any of the "Add Comment" button available on the Modal popups of any card entity. Purpose is to validate and add the new comment into comments.json, such that it can be rendered.
+                    <h5>Exception Handling</h5>
+                    <p>Does not accept empty JSON values, which are either of the body's "id" or "target_data". If either is an empty string, HTTP status 400 is returned along with an appropriate error message</p>
+                    <h5>Accepting Request And Its Origin</h5>
+                    <p>Accepts a JSON object consisting of 2 key:value pairs, "target_data" and "id". Such JSON file is extracted from the form text input within the popup modal, which is accessed by its unique id, determined by order of generation and index of entities.</p>
+                    <h5>Response Upon Valid Request</h5>
+                    <p>From the given "id" value in its request body, it will find the correct Card entity, and update it's list of comments, which is then returned and rendered in the client side.</p>
+                </fieldset>
+            </form>
+            <hr>
+            <!--app.get("/sort")-->
+            <form class="container row mt-5" style="">
+                <fieldset>
+                    <legend class="lead">GET("/sort"...</legend>
+                    <h5>Purpose</h5>
+                    <p>To gather all entities, and sort the Card entities by their date in increasing order, and re-arrage the Comment element's order corresponding to the movement within Card entity file.</p>
+                    <h5>Exception Handling</h5>
+                    <p>No exception</p>
+                    <h5>Accepting Request And Its Origin</h5>
+                    <p>fetch request sent when assigned button clicked by user.</p>
+                    <h5>Response Upon Valid Request</h5>
+                    <p>Sorts all cards and comments, synchronized, until card is sorted. JSON files are updated with the new arrangement of entity datas. Responds with the updated JSON files, to render entities.</p>
+                </fieldset>
+            </form>
+            <hr>
+            <!--app.get("/sort_freq")-->
+            <form class="container row mt-5" style="">
+                <fieldset>
+                    <legend class="lead">GET("/sort_freq"...</legend>
+                    <h5>Purpose</h5>
+                    <p>Similar to GET("sort"...  Except, sorting by the number of comments, and re-arranging card's position correspondingly.</p>
+                    <h5>Exception Handling</h5>
+                    <p>No exception handled</p>
+                    <h5>Accepting Request And Its Origin</h5>
+                    <p>Fetch request sent to this method when assigned button clicked by user.</p>
+                    <h5>Response Upon Valid Request</h5>
+                    <p>Doest the same as previous method, however with the Cards being swapped, and the Comments following that.</p>
+                </fieldset>
+            </form>
+        </div>
+          
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+    </body>
+</html>
