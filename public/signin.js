@@ -17,8 +17,8 @@ signup_btn.addEventListener("click",async function(event){
             body:JSON.stringify(parameters)
         })
         if (res.ok){
-            let data = await res.json()
-            let url = data["url"]+"/result.html"
+            let data = await res.text()
+            let url = data+"/result.html"
             window.location.href=url
         }else{
             alert(404)
@@ -30,9 +30,22 @@ signup_btn.addEventListener("click",async function(event){
 
 login_btn.addEventListener("click",async function(event){
     try{
-        let res = await fetch("/load_submit_pg")
+        event.preventDefault()
+        let parameters = {
+            username:document.getElementById("login_username").value,
+            password:document.getElementById("login_password").value,
+        }
+        let res = await fetch("/validate_login",{
+            method:"POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body:JSON.stringify(parameters)
+        })
         if (res.ok){
-            pass
+            let data = await res.text()
+            let url = data+"/result.html"
+            window.location.href=url
         }else{
             alert(404)
         }
