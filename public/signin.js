@@ -17,8 +17,9 @@ signup_btn.addEventListener("click",async function(event){
             body:JSON.stringify(parameters)
         })
         if (res.ok){
-            let validity = await res.json()
-            console.log(body)
+            let data = await res.json()
+            let url = data["url"]+"/result.html"
+            window.location.href=url
         }else{
             alert(404)
         }
